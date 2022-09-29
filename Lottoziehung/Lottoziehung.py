@@ -1,7 +1,5 @@
 import random
 
-
-
 def init_list(min, max):
     #list_draws.extend(range(1,46))
     list_draws = []
@@ -38,8 +36,7 @@ def lottoziehung_gut_programmiert(min, max, number_picks):
         list_draws[last_pos], list_draws[gez_index] = \
             list_draws[gez_index], list_draws[last_pos]
     return list_draws[-number_picks:]
-        
-        
+               
 def lottoziehung_statistik_gut_programmiert(min, max, number_picks, draws):
     for i in range(draws):
         for i in lottoziehung_gut_programmiert(min, max, number_picks):
