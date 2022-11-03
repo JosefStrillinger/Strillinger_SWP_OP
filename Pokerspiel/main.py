@@ -2,19 +2,21 @@ import random
 
 researched_precentages = [0.00015, 0.00135, 0.02, 0.14, 0.20, 0.39, 2.11, 4.75, 42.25, 50.2]
 
+#Funktion zur Ermittlung des Kartentyps
 def get_card_type(cards):
     card_types = []
     for i in cards:
         card_types.append(i%13)
     return card_types
 
+# Funktion zur Ermittlung der Kartenfarbe
 def get_card_color(cards):
     card_colors = []
     for i in cards:
         card_colors.append(i//13)
     return card_colors
  
-
+# Kartenziehen
 def draw_cards(count):
     drawn = []
     for i in range(count):
@@ -24,10 +26,12 @@ def draw_cards(count):
         drawn.append(card)
     return drawn
 
+# Statistik generieren
 def generate_statistic():
     stats = {"Royal Flush":0, "Straight Flush":0, "Four of a kind":0, "Full House":0, "Flush":0, "Straight":0, "Three of a kind":0, "Two Pair":0, "One Pair":0, "High Card":0}
     return stats
 
+# Kombinationen der Hand ermitteln
 def calculate_hand_combinations(drawn_types, drawn_colors):
     max_color = drawn_colors.count(max(drawn_colors, key=drawn_colors.count))
     max_type = drawn_types.count(max(drawn_types, key=drawn_types.count))
@@ -68,7 +72,8 @@ def calculate_hand_combinations(drawn_types, drawn_colors):
         return
     statistic["High Card"] += 1
     return
-                
+    
+# Ein Durchgang ==> Ziehen, Typ und Farbe ermitteln und Kombinationen ermitteln            
 def runthrough():
     drawn = draw_cards(5)
     colors = get_card_color(drawn)
