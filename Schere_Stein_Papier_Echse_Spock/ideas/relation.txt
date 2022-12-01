@@ -1,0 +1,34 @@
+Schere:
+    Schere = 0
+    Stein = -1
+    Papier = 1
+    Echse = 1
+    Spock = -1
+
+Stein:
+    Schere = 1
+    Stein = 0
+    Papier = -1
+    Echse = 1
+    Spock = -1
+
+Papier:
+    Schere = -1
+    Stein = 1
+    Papier = 0
+    Echse = -1
+    Spock = 1
+
+Echse:
+    Schere = -1
+    Stein = -1
+    Papier = 1
+    Echse = 0
+    Spock = 1
+
+Spock:
+    Schere = 1
+    Stein = 1
+    Papier = -1
+    Echse = -1
+    Spock = 0

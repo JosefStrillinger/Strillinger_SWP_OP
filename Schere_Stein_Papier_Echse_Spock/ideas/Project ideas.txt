@@ -1,0 +1,54 @@
+To have a good grade in this project, you have to go above and beyond.
+Ideas:
+user object oriented programming
+ie:
+	Classes for Commands and the game
+	(maybe give every option values to show how strong they are against other
+	 options, those values can then be compared to each other in an if to
+	 know if one option wins against another)
+
+Requirements.txt has to be created
+=> command => go into folder of project => pipreqs
+
+Database: ?
+
+Flask - Website to show data
+
+Virtual Enviroment ?
+
+Animations einfügen für Website oder 
+in in command Form von Schere / Stein / ... ausgeben
+
+-----------
+
+Zum programmieren:
+Vererbung einfügen ==> Also eine Classe von der dann die anderen Klassen (Schere, Stein,...) erben https://www.w3schools.com/python/python_inheritance.asp 
+vllt in dieser Class variablen definieren, die dann in den anderen Überschrieben werden (Klassenvariablen: https://pynative.com/python-class-variables/ )
+Variablen sollen darstelen, ob etwas stark oder schwach gegen etwas anderes ist (ie: -1 schwach, 0 unentschieden, 1 stark dagegen)
+Aufrufen vllt mit zb: Schere.Stein (Ich habe Schere und gegner hat Stein)
+Zu Computer:
+	evtl. Namen von Varianten (Schere, Stein, Papier, ...) in liste packen und dann random index auswählen
+	==> Stufe 1
+	Stufe 2:
+	PC soll analysieren, was Spieler oft verwendet und dinge Spielen, die diese kontern
+	Stufe 3:
+	Pc liest aus, was Spieler spielt und nimmt etwas das diesen Zug contert 
+
+
+	evtl Factory Pattern einfügen
+
+	Zu PC - Logik ==> vergangene Werte in SQLite speichern und für Wahl des Spielzuges speichern
+	Mustererkennung und darauf antworten
+
+	Schwerster modus:
+	man darf nichts mehr eingeben, der PC macht alles, damit man verliert
+
+
+
+
+
+
+
+
+
+
