@@ -1,7 +1,7 @@
 # TODO: make something decent
-
 import json
 import random
+from classes import game_item, schere, stein, papier, echse, spock
 
 class Command(): # look into it
     def __init__(self, id, method, description, command):
@@ -48,119 +48,73 @@ class SSPES_Game:
 
             res = obj.get_relation(random.choice(test))
             print(self.check_result(res))
-            self.print_game_stats()
-        
-        
+            print(self.print_game_stats())          
+          
+    #possible changes:
+    # add object to constructor, change ctor to (self, input_player, player_obj)          
+    # change case to return player_obj = schere.Schere()
+    # then other cases can be added
+     
     def input_handler(self, input_player): 
         match int(input_player):
             case 1:
                 stats["Schere"] += 1
-                return Schere()
+                return schere.Schere()
             case 2:
                 stats["Stein"] += 1
-                return Stein()
+                return stein.Stein()
             case 3:
                 stats["Papier"] += 1
-                return Papier()
+                return papier.Papier()
             case 4:
                 stats["Echse"] += 1
-                return Echse()
+                return echse.Echse()
             case 5:
                 stats["Spock"] += 1
-                return Spock()
+                return spock.Spock()
             case other:
-                return Game_Item()
+                return schere.Schere()
                 
     def check_result(self, outcome):
         match outcome:
             case -1:
                 stats["loss"] += 1
-                #save_event(1, "lose")
+                #save_event(0, "lose")
                 return "You lost!"
             case 0:
                 stats["draw"] += 1
-                #save_event(1, "draw")
+                #save_event(0, "draw")
                 return "It's a draw!"
             case 1:
-                stats["win"] += 1
-                #save_event(1, "win")
+                #stats["win"] += 1
+                save_event(0, "win")
                 return "You won!"
 
-    def print_game_stats():
-        print(stats)
+    def print_game_stats(self):
+        return stats
 
     def print_game_help():
         pass
     
     def set_difficulty():
         pass                            
-class Game_Item():
-    
-    def __init__(self):
-        self.name = "game"
-        self.relation = {"Schere" : 0, "Stein" : 0, "Papier" : 0, "Echse" : 0, "Spock" : 0}
-    
-    def get_relation(self, item2):
-        return self.relation[item2]
-    
-    def get_name(self):
-        return self.name
-    
-    def __str__(self):
-        return str(self.name)
-                
-class Schere(Game_Item):
-    
-    def __init__(self):
-        self.name = "Schere"
-        self.relation = {"Schere" : 0, "Stein" : -1, "Papier" : 1, "Echse" : 1, "Spock" : -1}
-        
-class Stein(Game_Item):
-    
-    def __init__(self):
-        self.name = "Stein"
-        self.relation = {"Schere" : 1, "Stein" : 0, "Papier" : -1, "Echse" : 1, "Spock" : -1}
-
-class Papier(Game_Item):
-    
-    def __init__(self):
-        self.name = "Papier"
-        self.relation = {"Schere" : -1, "Stein" : 1, "Papier" : 0, "Echse" : -1, "Spock" : 1}
-     
-class Echse(Game_Item):
-    
-    def __init__(self):
-        self.name = "Echse"
-        self.relation = {"Schere" : -1, "Stein" : -1, "Papier" : 1, "Echse" : 0, "Spock" : 1}
-        
-class Spock(Game_Item):
-    
-    def __init__(self):
-        self.name = "Spock"
-        self.relation = {"Schere" : 1, "Stein" : 1, "Papier" : -1, "Echse" : -1, "Spock" : 0}
-        
-#Dictionary einbauern
 
 def create_computer_options():
     return ["Schere", "Stein", "Papier", "Echse", "Spock"]
 
-def create_game():
-    pass
-
 def save_event(user_id, event):
     with open("save.txt", "r") as rd:
-        events = json.load(rd)
+        saves = json.load(rd)
         
-    events[user_id][event] +=1
+    saves[user_id][event] +=1
     
     with open("save.txt", "w") as wd:
-        wd.write(json.dumps(events))
+        wd.write(json.dumps(saves))
           
 def create_statistic():
     return {"Schere" : 0, "Stein" : 0, "Papier" : 0, "Echse" : 0, "Spock" : 0, "win":0, "draw" : 0, "loss": 0}
 
 def main():
-    #dict = create_dict()
     game = SSPES_Game()
     game.start()
 
