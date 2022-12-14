@@ -47,28 +47,44 @@ class SSPES_Game:
         
     def play(self):
         playing = True
-        test = ["Schere", "Stein", "Papier", "Echse", "Spock"]
+        comp_options = create_computer_options()
         while(playing):          
             a = input("Input a number of your choosing (1-5): ")
             self.command_input_handler(a)
                  
-            while not a.isnumeric() and int(a) not in range(1, 5+1):
+            while not a.isnumeric() or int(a) not in range(1, 5+1):
+                self.command_input_handler(a)
                 print("Please enter a valid number")
                 a = input("Input a number of your choosing (1-5): ")
+                
             obj = self.play_input_handler(a)
-
+            print(obj.get_weak_to())
+            player_percent_stats = get_statistic_percentage(get_plays_statistic("player"))
+            
             if self.difficulty == Difficulty.normal:
-                comp_turn = random.choice(test)
+                comp_turn = random.choice(comp_options)
                 print("Computer: " + comp_turn)
                 res = obj.get_relation(comp_turn)
                 print(self.check_result(res))
                 print(self.print_game_stats())
             
             if self.difficulty == Difficulty.hard:
-                pass
-            
+                most_used_player_turn = max(player_percent_stats)
+                comp_turns_possible = self.get_comp_options(most_used_player_turn)
+                print(comp_turns_possible)
+                comp_turn = random.choice(comp_turns_possible)
+                print("Computer: " + comp_turn)
+                res = obj.get_relation(comp_turn)
+                print(self.check_result(res))
+                print(self.print_game_stats())
+                
             if self.difficulty == Difficulty.impossible:
-                pass        
+                comp_turns_possible = obj.get_weak_to()
+                comp_turn = random.choice(comp_turns_possible)
+                print("Computer: " + comp_turn)
+                res = obj.get_relation(comp_turn)
+                print(self.check_result(res))
+                print(self.print_game_stats())      
           
     #possible changes:
     # add object to constructor, change ctor to (self, input_player, player_obj)          
@@ -86,43 +102,66 @@ class SSPES_Game:
         match int(input_player):
             case 1:
                 stats["Schere"] += 1
-                save_player_event("Schere")
+                save_player_event("player", "Schere")
                 print("Player: Schere")
                 return schere.Schere()
             case 2:
                 stats["Stein"] += 1
-                save_player_event("Stein")
+                save_player_event("player", "Stein")
                 print("Player: Stein")
                 return stein.Stein()
             case 3:
                 stats["Papier"] += 1
-                save_player_event("Papier")
+                save_player_event("player", "Papier")
                 print("Player: Papier")
                 return papier.Papier()
             case 4:
                 stats["Echse"] += 1
-                save_player_event("Echse")
+                save_player_event("player", "Echse")
                 print("Player: Echse")
                 return echse.Echse()
             case 5:
                 stats["Spock"] += 1
-                save_player_event("Spock")
+                save_player_event("player","Spock")
                 print("Player: Spock")
                 return spock.Spock()
-                
+    
+    def get_comp_options(self, input_comp):
+        match str(input_comp):
+            case "Schere":           
+                help_obj = schere.Schere()  
+                print(help_obj.get_weak_to())
+                return help_obj.get_weak_to()
+            case "Stein":
+                help_obj = stein.Stein()
+                print(help_obj.get_weak_to())
+                return help_obj.get_weak_to()
+            case "Papier":
+                help_obj = papier.Papier()
+                print(help_obj.get_weak_to())
+                return help_obj.get_weak_to()
+            case "Echse":
+                help_obj = echse.Echse()
+                print(help_obj.get_weak_to())
+                return help_obj.get_weak_to()
+            case "Spock":
+                help_obj = spock.Spock()
+                print(help_obj.get_weak_to())
+                return help_obj.get_weak_to()
+         
     def check_result(self, outcome):
         match outcome:
             case -1:
                 stats["loss"] += 1
-                save_player_event("loss")
+                save_player_event("player","loss")
                 return "You lost!"
             case 0:
                 stats["draw"] += 1
-                save_player_event("draw")
+                save_player_event("player", "draw")
                 return "It's a draw!"
             case 1:
                 stats["win"] += 1
-                save_player_event("win")
+                save_player_event("player", "win")
                 return "You won!"
 
     def print_game_stats(self):
@@ -157,16 +196,42 @@ class SSPES_Game:
         exit()
             
         
-                   
+def get_plays_statistic(name):
+    with open("player_save.txt", "r") as rd:
+        saves = json.load(rd)     
+    return saves[name]
+
+def get_statistic_percentage(stat):
+    needed_dict = {"Schere": 0, "Stein": 0, "Papier": 0, "Echse": 0, "Spock": 0}
+    for i in stat.keys():
+        if i in needed_dict.keys():
+            needed_dict[i] = stat[i]
+    
+    plays = sum(needed_dict.values())
+    
+    percentages = []
+    for j in needed_dict.values():
+        percentages.append(j/plays*100)
+        
+    dict_with_percentages = {"Schere": 0, "Stein": 0, "Papier": 0, "Echse": 0, "Spock": 0}
+    
+    x = 0
+    for i in needed_dict:
+        print(i+": "+str(round(percentages[x], 5))+" % " + str(needed_dict[i])+" mal")
+        dict_with_percentages[i] = percentages[x]
+        x += 1
+        
+    return dict_with_percentages
 
 def create_computer_options():
     return ["Schere", "Stein", "Papier", "Echse", "Spock"]
 
-def save_player_event(event):
+def save_player_event(name, event):
+    name = "player"
     with open("player_save.txt", "r") as rd:
         saves = json.load(rd)
         
-    saves["player"][event] +=1
+    saves[name][event] +=1
     
     with open("player_save.txt", "w") as wd:
         wd.write(json.dumps(saves))
@@ -184,5 +249,4 @@ def main():
 
 if __name__ == "__main__":
     stats = create_statistic()
-    stats2 = {"player":{"Schere" : 0, "Stein" : 0, "Papier" : 0, "Echse" : 0, "Spock" : 0, "win":0, "draw" : 0, "loss": 0}}
     main()

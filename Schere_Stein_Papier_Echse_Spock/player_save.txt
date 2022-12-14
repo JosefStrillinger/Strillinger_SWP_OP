@@ -1,1 +1,1 @@
-{"player": {"Schere": 23, "Stein": 20, "Papier": 20, "Echse": 18, "Spock": 14, "win": 40, "draw": 17, "loss": 38}}
+{"player": {"Schere": 202, "Stein": 65, "Papier": 52, "Echse": 48, "Spock": 49, "win": 162, "draw": 47, "loss": 199}}
