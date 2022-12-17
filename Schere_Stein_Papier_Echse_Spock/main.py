@@ -2,7 +2,7 @@
 import json
 import random
 from enum import Enum
-from classes import game_item, schere, stein, papier, echse, spock
+from classes import game_item, schere, stein, papier, echse, spock, player
 
 class Difficulty(Enum):
     normal = 1
@@ -40,7 +40,8 @@ class SSPES_Game:
         
     def init(self):
         self.difficulty = Difficulty.normal
-        self.player = "player"
+        self.player = player.Player("player")
+        self.player.init_player()
         self.play_statistic = self.create_statistic()
         
     def start(self):
@@ -134,27 +135,27 @@ class SSPES_Game:
         match int(input_player):
             case 1:
                 self.play_statistic["Schere"] += 1
-                self.save_player_event(self.player, "Schere")
+                self.save_player_event("Schere")
                 print("Player: Schere")
                 return schere.Schere()
             case 2:
-                self.play_statisticats["Stein"] += 1
-                self.save_player_event(self.player, "Stein")
+                self.play_statistic["Stein"] += 1
+                self.save_player_event("Stein")
                 print("Player: Stein")
                 return stein.Stein()
             case 3:
                 self.play_statistic["Papier"] += 1
-                self.save_player_event(self.player, "Papier")
+                self.save_player_event("Papier")
                 print("Player: Papier")
                 return papier.Papier()
             case 4:
                 self.play_statistic["Echse"] += 1
-                self.save_player_event(self.player, "Echse")
+                self.save_player_event("Echse")
                 print("Player: Echse")
                 return echse.Echse()
             case 5:
                 self.play_statistic["Spock"] += 1
-                self.save_player_event(self.player,"Spock")
+                self.save_player_event("Spock")
                 print("Player: Spock")
                 return spock.Spock()
     
@@ -185,19 +186,19 @@ class SSPES_Game:
         match outcome:
             case -1:
                 self.play_statistic["loss"] += 1
-                self.save_player_event(self.player,"loss")
+                self.save_player_event("loss")
                 return "You lost!"
             case 0:
                 self.play_statistic["draw"] += 1
-                self.save_player_event(self.player, "draw")
+                self.save_player_event("draw")
                 return "It's a draw!"
             case 1:
                 self.play_statistic["win"] += 1
-                self.save_player_event(self.player, "win")
+                self.save_player_event("win")
                 return "You won!"
 
     def print_game_stats(self):
-        return self.statistics
+        return self.play_statistic
 
     def print_game_help():
         pass
@@ -228,14 +229,16 @@ class SSPES_Game:
         self.set_player(pi)
     
     def set_player(self, player_name):
-        self.player = str(player_name).lower()
+        self.player.set_name(str(player_name).lower())
+        self.player.init_player()
     
     def end_game(self):
         print("Thank you for playing")
         exit()
             
         
-    def get_plays_statistic(self, name):
+    def get_plays_statistic(self, player):
+        name = player.get_name()
         with open("player_save.txt", "r") as rd:
             saves = json.load(rd)     
         return saves[name]
@@ -265,7 +268,8 @@ class SSPES_Game:
     def create_computer_options(self):
         return ["Schere", "Stein", "Papier", "Echse", "Spock"]
 
-    def save_player_event(self, name, event):
+    def save_player_event(self, event):
+        name = self.player.get_name()
         with open("player_save.txt", "r") as rd:
             saves = json.load(rd)
 
@@ -285,6 +289,5 @@ def main():
         
     #print(saves["player"]["loss"])
 
-if __name__ == "__main__":
-    
+if __name__ == "__main__": 
     main()
