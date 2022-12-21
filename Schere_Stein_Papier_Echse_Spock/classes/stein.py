@@ -1,6 +1,6 @@
-from classes import game_item
+from classes.game_item import Game_Item
 
-class Stein(game_item.Game_Item):
+class Stein(Game_Item):
     
     def __init__(self):
         self.name = "Stein"

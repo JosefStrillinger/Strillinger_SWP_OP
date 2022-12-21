@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8" /> 
+</head>
+
+<title>SSPES</title>
+
+<body>
+    <!--<img src="/player_stats.png">-->
+    <div id='chart' class='chart'></div>
+    <div id = "chart2" class='chart2'></div>
+
+</body>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+    var graphs = {{graphs[0] | safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
+
+<script type='text/javascript'>
+    var graphs = {{graphs[1] | safe}};
+    Plotly.plot('chart2',graphs,{});
+</script>

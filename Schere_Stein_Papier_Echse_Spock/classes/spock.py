@@ -1,6 +1,6 @@
-from classes import game_item
+from classes.game_item import Game_Item
 
-class Spock(game_item.Game_Item):
+class Spock(Game_Item):
     
     def __init__(self):
         self.name = "Spock"

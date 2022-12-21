@@ -1,1 +1,1 @@
-{"player": {"Schere": 202, "Stein": 65, "Papier": 52, "Echse": 48, "Spock": 49, "win": 162, "draw": 47, "loss": 199}, "josef": {"Schere": 12, "Stein": 8, "Papier": 7, "Echse": 6, "Spock": 8, "win": 16, "draw": 5, "loss": 20}}
+{"player": {"Schere": 202, "Stein": 65, "Papier": 52, "Echse": 48, "Spock": 49, "win": 162, "draw": 47, "loss": 199}, "josef": {"Schere": 32, "Stein": 9, "Papier": 8, "Echse": 7, "Spock": 9, "win": 20, "draw": 5, "loss": 40}}
