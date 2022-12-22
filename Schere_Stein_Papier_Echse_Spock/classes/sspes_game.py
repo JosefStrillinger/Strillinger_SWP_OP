@@ -8,6 +8,8 @@ from classes.echse import Echse
 from classes.spock import Spock
 from classes.player import Player
 from classes.difficulty import Difficulty
+from classes.command import Command
+from classes.command_manager import Command_Manager
 
 class SSPES_Game:
     def __init__(self):
@@ -18,7 +20,21 @@ class SSPES_Game:
         self.player = Player("player")
         self.player.init_player()
         self.play_statistic = self.create_statistic()
-        
+        self.command_manager = Command_Manager()
+        exit = Command(self.end_game, "-e")
+        play = Command(self.play, "-p")
+        reset = Command(self.start, "-r")
+        player = Command(self.input_player, "-pl")
+        difficulty = Command(self.input_difficulty, "-d")
+        menu = Command(self.input_menu_command, "-m")
+        commands = [exit, play, reset, player, difficulty, menu]
+        for i in range(len(commands)):
+            self.command_manager.add_cmd(commands[i])
+        #print(self.command_manager.commands)
+        # TODO:
+        # finish command manager and make it work
+        # --> asap
+           
     def start(self):
         self.game_menu()
         
@@ -33,28 +49,34 @@ class SSPES_Game:
             while not a.isnumeric() or int(a) not in range(1, 5+1):
                 if str(a).lower() == "-m":
                     self.input_menu_command()
+                if str(a).lower() == "-e":
+                    self.end_game()
                 print("Please enter a valid number")
                 a = input("Input a number of your choosing (1-5): ")
                 
-            obj = self.play_input_handler(a)
-            print(obj.get_weak_to())
+            
+            #print(obj.get_weak_to())
+            print("\nGlobal stats for player: ")
             player_percent_stats = self.get_statistic_percentage(self.get_plays_statistic(self.player))
+            
+            print("")
+            obj = self.play_input_handler(a)
             
             if self.difficulty == Difficulty.normal:
                 comp_turn = random.choice(comp_options)
                 print("Computer: " + comp_turn)
                 res = obj.get_relation(comp_turn)
-                print(self.check_result(res))
+                print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())
             
             if self.difficulty == Difficulty.hard:
                 most_used_player_turn = max(player_percent_stats)
                 comp_turns_possible = self.get_comp_options(most_used_player_turn)
-                print(comp_turns_possible)
+                #print(comp_turns_possible)
                 comp_turn = random.choice(comp_turns_possible)
                 print("Computer: " + comp_turn)
                 res = obj.get_relation(comp_turn)
-                print(self.check_result(res))
+                print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())
                 
             if self.difficulty == Difficulty.impossible:
@@ -62,7 +84,7 @@ class SSPES_Game:
                 comp_turn = random.choice(comp_turns_possible)
                 print("Computer: " + comp_turn)
                 res = obj.get_relation(comp_turn)
-                print(self.check_result(res))
+                print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())      
           
     #possible changes:
@@ -93,15 +115,20 @@ class SSPES_Game:
         match str(input_command).lower():
             case "-e":
                 self.end_game()
+                #self.command_manager.run_cmd("-e")
             case "-r":
                 self.start()
+                #self.command_manager.run_cmd("-r")
             case "-p":
                 self.play()
+                #self.command_manager.run_cmd("-p")
             case "-pl":
                 self.input_player()
+                #self.command_manager.run_cmd("-pl")
                 self.input_menu_command()
             case "-d":
                 self.input_difficulty()
+                #self.command_manager.run_cmd("-d")
                 self.input_menu_command()
             case other:
                 self.input_menu_command()
@@ -138,23 +165,23 @@ class SSPES_Game:
         match str(input_comp):
             case "Schere":           
                 help_obj = Schere()  
-                print(help_obj.get_weak_to())
+                #print(help_obj.get_weak_to())
                 return help_obj.get_weak_to()
             case "Stein":
                 help_obj = Stein()
-                print(help_obj.get_weak_to())
+                #print(help_obj.get_weak_to())
                 return help_obj.get_weak_to()
             case "Papier":
                 help_obj = Papier()
-                print(help_obj.get_weak_to())
+                #print(help_obj.get_weak_to())
                 return help_obj.get_weak_to()
             case "Echse":
                 help_obj = Echse()
-                print(help_obj.get_weak_to())
+                #print(help_obj.get_weak_to())
                 return help_obj.get_weak_to()
             case "Spock":
                 help_obj = Spock()
-                print(help_obj.get_weak_to())
+                #print(help_obj.get_weak_to())
                 return help_obj.get_weak_to()
          
     def check_result(self, outcome):
@@ -233,7 +260,7 @@ class SSPES_Game:
 
         x = 0
         for i in needed_dict:
-            print(i+": "+str(round(percentages[x], 5))+" % " + str(needed_dict[i])+" mal")
+            print(i+": "+str(round(percentages[x], 5))+" % \t" + str(needed_dict[i])+" mal")
             dict_with_percentages[i] = percentages[x]
             x += 1
 
