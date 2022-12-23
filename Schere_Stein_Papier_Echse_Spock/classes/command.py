@@ -6,7 +6,7 @@ class Command(): # look into it
         self.command = command
     
     def run_cmd(self):
-        self.method
+        self.method()
         
     def __str__(self):
         print("Description: {0} \nCommand: {1}\n".format(self.command))

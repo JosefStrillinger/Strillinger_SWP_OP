@@ -1,6 +1,7 @@
 import json
 import random
 from enum import Enum
+from colored import fg, bg, attr
 from classes.schere import Schere
 from classes.stein import Stein
 from classes.papier import Papier
@@ -30,10 +31,6 @@ class SSPES_Game:
         commands = [exit, play, reset, player, difficulty, menu]
         for i in range(len(commands)):
             self.command_manager.add_cmd(commands[i])
-        #print(self.command_manager.commands)
-        # TODO:
-        # finish command manager and make it work
-        # --> asap
            
     def start(self):
         self.game_menu()
@@ -54,46 +51,48 @@ class SSPES_Game:
                 print("Please enter a valid number")
                 a = input("Input a number of your choosing (1-5): ")
                 
-            
             #print(obj.get_weak_to())
             print("\nGlobal stats for player: ")
             player_percent_stats = self.get_statistic_percentage(self.get_plays_statistic(self.player))
-            
             print("")
             obj = self.play_input_handler(a)
             
             if self.difficulty == Difficulty.normal:
                 comp_turn = random.choice(comp_options)
-                print("Computer: " + comp_turn)
+                print(f"Computer: {fg(9)}" + comp_turn + f"{attr('reset')}")
                 res = obj.get_relation(comp_turn)
                 print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())
             
-            if self.difficulty == Difficulty.hard:
+            if self.difficulty == Difficulty.hard1:
                 most_used_player_turn = max(player_percent_stats)
                 comp_turns_possible = self.get_comp_options(most_used_player_turn)
                 #print(comp_turns_possible)
                 comp_turn = random.choice(comp_turns_possible)
-                print("Computer: " + comp_turn)
+                print(f"Computer: {fg(9)}" + comp_turn + f"{attr('reset')}")
                 res = obj.get_relation(comp_turn)
                 print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())
-                
+            
+            if self.difficulty == Difficulty.hard2:# Has to be fixed / created
+                most_used_player_turn = max(self.play_statistic)
+                comp_turns_possible = random.choice(most_used_player_turn)
+                comp_turn = random.choice(comp_turns_possible)
+                print(f"Computer: {fg(9)}" + comp_turn + f"{attr('reset')}")
+                res = obj.get_relation(comp_turn)
+                print("\nResult: "+self.check_result(res))
+                print(self.print_game_stats())
+            
             if self.difficulty == Difficulty.impossible:
                 comp_turns_possible = obj.get_weak_to()
                 comp_turn = random.choice(comp_turns_possible)
-                print("Computer: " + comp_turn)
+                print(f"Computer: {fg(9)}" + comp_turn + f"{attr('reset')}")
                 res = obj.get_relation(comp_turn)
                 print("\nResult: "+self.check_result(res))
                 print(self.print_game_stats())      
-          
-    #possible changes:
-    # add object to constructor, change ctor to (self, input_player, player_obj)          
-    # change case to return player_obj = schere.Schere()
-    # then other cases can be added
     
     def game_menu(self):
-        print("\nWelcome the SSPES - Game developed by Josef Strillinger")
+        print(f"\n{fg(14)}Welcome the SSPES - Game developed by Josef Strillinger{attr('reset')}")
         self.get_commands()
         self.input_menu_command()
     
@@ -114,21 +113,21 @@ class SSPES_Game:
     def command_input_handler(self, input_command):
         match str(input_command).lower():
             case "-e":
-                self.end_game()
-                #self.command_manager.run_cmd("-e")
+                #self.end_game()
+                self.command_manager.run_cmd("-e")
             case "-r":
-                self.start()
-                #self.command_manager.run_cmd("-r")
+                #self.start()
+                self.command_manager.run_cmd("-r")
             case "-p":
-                self.play()
-                #self.command_manager.run_cmd("-p")
+                #self.play()
+                self.command_manager.run_cmd("-p")
             case "-pl":
-                self.input_player()
-                #self.command_manager.run_cmd("-pl")
+                #self.input_player()
+                self.command_manager.run_cmd("-pl")
                 self.input_menu_command()
             case "-d":
-                self.input_difficulty()
-                #self.command_manager.run_cmd("-d")
+                #self.input_difficulty()
+                self.command_manager.run_cmd("-d")
                 self.input_menu_command()
             case other:
                 self.input_menu_command()
@@ -138,27 +137,27 @@ class SSPES_Game:
             case 1:
                 self.play_statistic["Schere"] += 1
                 self.save_player_event("Schere")
-                print("Player: Schere")
+                print(f"Player: {fg(27)}Schere{attr('reset')}")
                 return Schere()
             case 2:
                 self.play_statistic["Stein"] += 1
                 self.save_player_event("Stein")
-                print("Player: Stein")
+                print(f"Player: {fg(27)}Stein{attr('reset')}")
                 return Stein()
             case 3:
                 self.play_statistic["Papier"] += 1
                 self.save_player_event("Papier")
-                print("Player: Papier")
+                print(f"Player: {fg(27)}Papier{attr('reset')}")
                 return Papier()
             case 4:
                 self.play_statistic["Echse"] += 1
                 self.save_player_event("Echse")
-                print("Player: Echse")
+                print(f"Player: {fg(27)}Echse{attr('reset')}")
                 return Echse()
             case 5:
                 self.play_statistic["Spock"] += 1
                 self.save_player_event("Spock")
-                print("Player: Spock")
+                print(f"Player: {fg(27)}Spock{attr('reset')}")
                 return Spock()
     
     def get_comp_options(self, input_comp):
@@ -189,15 +188,15 @@ class SSPES_Game:
             case -1:
                 self.play_statistic["loss"] += 1
                 self.save_player_event("loss")
-                return "You lost!"
+                return f"{fg(1)}You lost! {attr('reset')}"
             case 0:
                 self.play_statistic["draw"] += 1
                 self.save_player_event("draw")
-                return "It's a draw!"
+                return f"{fg(17)}It's a draw! {attr('reset')}"
             case 1:
                 self.play_statistic["win"] += 1
                 self.save_player_event("win")
-                return "You won!"
+                return f"{fg(28)}You won! {attr('reset')}"
 
     def print_game_stats(self):
         return self.play_statistic
@@ -206,11 +205,11 @@ class SSPES_Game:
         pass
     
     def input_difficulty(self):
-        valid_inputs = ["normal", "hard", "impossible"]
-        di = input("Enter Difficulty (normal, hard or impossible): ")
+        valid_inputs = ["normal", "hard1", "hard2", "impossible"]
+        di = input("Enter Difficulty (normal, hard1, hard2 or impossible): ")
         while str(di).lower() not in valid_inputs:
             print("Please enter a valid Difficulty")
-            di = input("Enter Difficulty (normal, hard or impossible): ")          
+            di = input("Enter Difficulty (normal, hard1, hard2 or impossible): ")          
         self.set_difficulty(di)
         print(self.difficulty)       
        
@@ -219,8 +218,11 @@ class SSPES_Game:
             case "normal":
                 self.difficulty = Difficulty.normal
                 return
-            case "hard":
-                self.difficulty = Difficulty.hard
+            case "hard1":
+                self.difficulty = Difficulty.hard1
+                return
+            case "hard2":
+                self.difficulty = Difficulty.hard2
                 return
             case "impossible":
                 self.difficulty = Difficulty.impossible
