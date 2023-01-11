@@ -35,7 +35,7 @@ def show_statistics():
     graphs = [graphJSON, graphJSON2]
     return render_template("data.html", graphs = graphs)
 
-@app.route('/upload_stats', methods = ['GET', 'PUT'])
+@app.route('/upload_stats', methods = ['PUT'])
 def get_player_statistic():
     print("upload start")
     save_data = request.get_json()
