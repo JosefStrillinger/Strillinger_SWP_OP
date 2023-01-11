@@ -1,6 +1,6 @@
 import json
 from flask_restful import Api
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 import matplotlib.pyplot as plt
 from classes.sspes_game import SSPES_Game
 import plotly
@@ -35,12 +35,22 @@ def show_statistics():
     graphs = [graphJSON, graphJSON2]
     return render_template("data.html", graphs = graphs)
 
+@app.route('/upload_stats', methods = ['GET', 'PUT'])
+def get_player_statistic():
+    print("upload start")
+    save_data = request.get_json()
+    print()
+    with open("flask_save.json", "w") as rd:
+        rd.write(json.dumps(save_data))
+    print("success")
+    return redirect(url_for("start"))
+
 @app.route('/game')
 def play_game():
     return render_template("game.html")
 
 def get_player_stats(player_name):
-    with open("player_save.txt", "r") as rd:
+    with open("flask_save.json", "r") as rd:
         saves = json.load(rd)     
     return saves[player_name]
 

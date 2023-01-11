@@ -2,6 +2,7 @@ import json
 import random
 from enum import Enum
 from colored import fg, bg, attr
+import requests
 from classes.schere import Schere
 from classes.stein import Stein
 from classes.papier import Papier
@@ -104,6 +105,7 @@ class SSPES_Game:
         print("Play Game: \t\t-p")
         print("Change Player: \t\t-pl")
         print("Change Difficulty: \t-d")
+        print("Upload Stats: \t\t-s")
         print("----------------------------------------------------------")
            
     def input_menu_command(self):
@@ -129,6 +131,13 @@ class SSPES_Game:
                 #self.input_difficulty()
                 self.command_manager.run_cmd("-d")
                 self.input_menu_command()
+            case "-s":
+                try:
+                    self.upload_player_statistics()
+                    self.input_menu_command()
+                except:
+                    print("an error occured")
+                    self.input_menu_command()
             case other:
                 self.input_menu_command()
                 
@@ -239,6 +248,12 @@ class SSPES_Game:
     def end_game(self):
         print("Thank you for playing")
         exit()
+        
+    def upload_player_statistics(self):
+        with open("player_save.txt", "r") as rd:
+            save = json.load(rd)
+        
+        requests.put("http://127.0.0.1:5000/upload_stats", json=save)
               
     def get_plays_statistic(self, player):
         name = player.get_name()
