@@ -23,13 +23,15 @@ class SSPES_Game:
         self.player.init_player()
         self.play_statistic = self.create_statistic()
         self.command_manager = Command_Manager()
+        self.website_url = "http://127.0.0.1:5000/"
         exit = Command(self.end_game, "-e")
         play = Command(self.play, "-p")
         reset = Command(self.start, "-r")
         player = Command(self.input_player, "-pl")
         difficulty = Command(self.input_difficulty, "-d")
         menu = Command(self.input_menu_command, "-m")
-        commands = [exit, play, reset, player, difficulty, menu]
+        save = Command(self.upload_player_statistics, "-s")
+        commands = [exit, play, reset, player, difficulty, menu, save]
         for i in range(len(commands)):
             self.command_manager.add_cmd(commands[i])
            
@@ -46,9 +48,9 @@ class SSPES_Game:
                  
             while not a.isnumeric() or int(a) not in range(1, 5+1):
                 if str(a).lower() == "-m":
-                    self.input_menu_command()
+                    self.command_manager.run_cmd("-m")
                 if str(a).lower() == "-e":
-                    self.end_game()
+                    self.command_manager.run_cmd("-e")
                 print("Please enter a valid number")
                 a = input("Input a number of your choosing (1-5): ")
                 
@@ -76,8 +78,9 @@ class SSPES_Game:
                 print(self.print_game_stats())
             
             if self.difficulty == Difficulty.hard2:# Has to be fixed / created
+                print(str(self.difficulty))
                 most_used_player_turn = max(self.play_statistic)
-                comp_turns_possible = random.choice(most_used_player_turn)
+                comp_turns_possible = self.get_comp_options(most_used_player_turn)
                 comp_turn = random.choice(comp_turns_possible)
                 print(f"Computer: {fg(9)}" + comp_turn + f"{attr('reset')}")
                 res = obj.get_relation(comp_turn)
@@ -106,6 +109,7 @@ class SSPES_Game:
         print("Change Player: \t\t-pl")
         print("Change Difficulty: \t-d")
         print("Upload Stats: \t\t-s")
+        print("Menu: \t\t\t-m")
         print("----------------------------------------------------------")
            
     def input_menu_command(self):
@@ -131,9 +135,12 @@ class SSPES_Game:
                 #self.input_difficulty()
                 self.command_manager.run_cmd("-d")
                 self.input_menu_command()
+            case "-m":
+                self.command_manager.run_cmd("-m")
+                self.input_menu_command()
             case "-s":
                 try:
-                    self.upload_player_statistics()
+                    self.command_manager.run_cmd("-s")
                     self.input_menu_command()
                 except:
                     print("an error occured")
@@ -252,8 +259,8 @@ class SSPES_Game:
     def upload_player_statistics(self):
         with open("player_save.txt", "r") as rd:
             save = json.load(rd)
-        
-        requests.put("http://127.0.0.1:5000/upload_stats", json=save)
+        requests.put(self.website_url + "upload_stats", json=save)
+        print("uploaded")
               
     def get_plays_statistic(self, player):
         name = player.get_name()
