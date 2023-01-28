@@ -28,16 +28,34 @@ class LinkedList():
     
     def __getitem__(self, index):
         return self.get_element_by_index(index)
-        
+    
+    def __str__(self):
+        print_val = self.get_first_element()
+        to_print = "["
+        first = True
+        while print_val is not None:
+            if first:
+                to_print = to_print + str(print_val)
+                first = False         
+            else:
+                to_print = to_print + ", " + str(print_val)       
+            print_val = print_val.get_next_element()
+        to_print = to_print + "]"
+        return to_print
+     
     def append(self, element):
+        new_element = Node(element)
         if self.first_element is not None:
             last_element = self.get_last_element()
-            last_element.set_next_element(element)
+            last_element.set_next_element(new_element)
         else:
-            self.first_element = element
+            self.first_element = new_element
             
     def get_first_element(self):
         return self.first_element
+    
+    def set_first_element(self, element):
+        self.first_element = element
     
     def print_first_element(self):
         return self.get_first_element().content
@@ -55,6 +73,9 @@ class LinkedList():
             print_val = print_val.get_next_element()
     
     def sort(self):
+        self.insertion_sort()#could be changed to bubble_sort()
+    
+    def bubble_sort(self):
         n = len(self)
         swapped = False
         for i in range(n-1):
@@ -65,7 +86,29 @@ class LinkedList():
                                        
             if not swapped:
                 print("sorted")
-                return        
+                return
+            
+    def insertion_sort(self):
+        sorted = None
+        current = self.first_element
+        while (current != None):
+            next = current.get_next_element()
+            sorted = self.sorted_insert(sorted, current)
+            current = next
+        self.first_element = sorted
+        
+    def sorted_insert(self, head_ref, new_element):
+        current = None
+        if(head_ref == None or (head_ref).content >= new_element.content):
+            new_element.set_next_element(head_ref)
+            head_ref = new_element
+        else:
+            current = head_ref
+            while (current.get_next_element() != None and current.get_next_element().content < new_element.content):
+                current = current.get_next_element()
+            new_element.set_next_element(current.get_next_element())
+            current.set_next_element(new_element)
+        return head_ref
     
     def get_element_by_index(self, index):
         n = len(self)
@@ -77,7 +120,35 @@ class LinkedList():
         return element
     
     def print_element_by_index(self, index):
-        return self.get_element_by_index(index).content    
+        return self.get_element_by_index(index).content 
+    
+    def remove(self, index):
+        if index != 0 and index != len(self)-1 and not index > len(self)-1:
+            self[index-1].set_next_element(self[index].get_next_element())
+        elif index == 0:
+            self.set_first_element(self[index+1])
+        elif index == len(self)-1:
+            self[index-1].next_element = None
+        elif index > len(self)-1:
+            raise IndexError("Please use a valid index")
+        print("Removed element at index: " + str(index))
+        
+    def reverse(self):
+        if not len(self) < 1:
+            prev = None
+            current = self.get_first_element()
+            while(current is not None):
+                next = current.get_next_element()
+                current.set_next_element(prev)
+                prev = current
+                current = next
+            self.first_element = prev 
+    
+    def shuffle(self):
+        pass
+    
+    # TODO: implement things
+      
 class LinkedListIterator:
     def __init__(self, head):
         self.current = head
@@ -93,7 +164,7 @@ class LinkedListIterator:
             self.current = self.current.get_next_element()
             return item 
                 
-class ListElement():
+class Node():
     
     def __init__(self, content = None):
         self.content = content
@@ -111,27 +182,39 @@ class ListElement():
     def set_next_element(self, new_element):
         self.next_element = new_element
 
+def print_list_querys(list):
+    print("-----------------------------")
+    print("First Element: " + str(list.print_first_element()))
+    print("Last Element: " + str(list.print_last_element()))
+    print("List Length: " + str(len(list)))
+    print("Element at index ("+ str(1) +"): " + str(list.print_element_by_index(1)))
+    print("-----------------------------")
+
 def main():
     my_list = LinkedList()
     count = 10
     for i in range(count):
-        my_list.append(ListElement(random.randint(0, 100)))
-    my_list.print_list()
-    print("-----------------------------")
-    print("First Element: " + str(my_list.print_first_element()))
-    print("Last Element: " + str(my_list.print_last_element()))
-    print("List Length: " + str(len(my_list)))
-    print("Element at index: " + str(my_list.print_element_by_index(1)))
-    print("-----------------------------")
+        my_list.append(random.randint(0, 100))
+    print(my_list)
+    
+    print_list_querys(my_list)
+    
     #list2 = my_list
     my_list.sort()
-    my_list.print_list()
-    print("-----------------------------")
-    print("First Element: " + str(my_list.print_first_element()))
-    print("Last Element: " + str(my_list.print_last_element()))
-    print("List Length: " + str(len(my_list)))
-    print("Element at index: " + str(my_list.print_element_by_index(1)))
-    print("-----------------------------")
+    print(my_list)
+   
+    print_list_querys(my_list)
+    
+    my_list.remove(0)
+    print(my_list)
+    
+    print_list_querys(my_list)
+    
+    my_list.reverse()
+    print(my_list)
+    
+    print_list_querys(my_list)
+    
     #list2.print_list()
     #print("-----------------------------")
     #sorted(list2)
