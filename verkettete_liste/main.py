@@ -58,12 +58,16 @@ class LinkedList():
         self.first_element = element
     
     def print_first_element(self):
+        if self.first_element is None:
+            raise IndexError("No first element")
         return self.get_first_element().content
     
     def get_last_element(self):
         return self[len(self)-1]
     
     def print_last_element(self):
+        if self.get_last_element() is None:
+            raise IndexError("List is empty")
         return self.get_last_element().content
     
     def print_list(self):
@@ -113,14 +117,14 @@ class LinkedList():
     def get_element_by_index(self, index):
         n = len(self)
         element = self.get_first_element()
-        if index > n-1 or index < 0:
+        if index > n-1 or index < 0 or n == 0:
             raise IndexError("Please use a valid index")
         for i in range(index):
             element = element.get_next_element()
         return element
     
     def print_element_by_index(self, index):
-        return self.get_element_by_index(index).content 
+        return self[index].content 
     
     def remove(self, index):
         if index != 0 and index != len(self)-1 and not index > len(self)-1:
@@ -144,8 +148,16 @@ class LinkedList():
                 current = next
             self.first_element = prev 
     
+    def clear(self):
+        self.set_first_element(None)
+    
     def shuffle(self):
-        pass
+        indices = list(range(len(self)))
+        random.shuffle(indices)
+        new_linked_list = LinkedList()
+        for index in indices:
+            new_linked_list.append(self[index].content)
+        self.first_element = new_linked_list.first_element
     
     # TODO: implement things
       
@@ -154,7 +166,7 @@ class LinkedListIterator:
         self.current = head
     
     def __iter__(self):
-        return self    
+        return self
     
     def __next__(self):
         if not self.current:
@@ -187,39 +199,43 @@ def print_list_querys(list):
     print("First Element: " + str(list.print_first_element()))
     print("Last Element: " + str(list.print_last_element()))
     print("List Length: " + str(len(list)))
-    print("Element at index ("+ str(1) +"): " + str(list.print_element_by_index(1)))
+    print("Element at index ("+ str(1) +"): " + str(list[1]))
     print("-----------------------------")
 
 def main():
     my_list = LinkedList()
     count = 10
+    
     for i in range(count):
         my_list.append(random.randint(0, 100))
+
     print(my_list)
-    
     print_list_querys(my_list)
     
-    #list2 = my_list
+    # sorting list
     my_list.sort()
     print(my_list)
-   
     print_list_querys(my_list)
     
+    # removing first element
     my_list.remove(0)
     print(my_list)
-    
     print_list_querys(my_list)
     
+    # reversing list
     my_list.reverse()
     print(my_list)
-    
     print_list_querys(my_list)
     
-    #list2.print_list()
-    #print("-----------------------------")
-    #sorted(list2)
-    #list2.print_list()
+    # shuffle the list
+    my_list.shuffle()
+    print(my_list)
+    print_list_querys(my_list)
     
+    # clearing the list
+    my_list.clear()
+    print(my_list)
+    #print_list_querys(my_list)
     
 if __name__ == "__main__":
     main()
