@@ -140,7 +140,7 @@ class LinkedList():
     def print_element_by_index(self, index):
         return self[index].content 
     
-    def remove(self, index):
+    def pop(self, index):
         if index != 0 and index != len(self)-1 and not index > len(self)-1:
             self[index-1].set_next_element(self[index].get_next_element())
         elif index == 0:
@@ -173,7 +173,23 @@ class LinkedList():
             new_linked_list.append(self[index].content)
         self.first_element = new_linked_list.first_element
         
-    # TODO: implement things
+    def find(self, value):
+        for i in range(len(self)):
+            if self[i].content == value:
+                #print("Value %s found at index %d" % (value, i))
+                return i
+        return None
+    
+    def contains(self, value):
+        response = self.find(value)
+        if response is None:
+            #print("List does not contain: %s" % value)
+            return False
+        else:
+            #print("List contains value %s" % value)
+            return True
+    
+    # remove element with specific value
       
 class LinkedListIterator:
     def __init__(self, head):
