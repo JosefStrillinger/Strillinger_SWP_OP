@@ -173,7 +173,7 @@ class LinkedList():
             new_linked_list.append(self[index].content)
         self.first_element = new_linked_list.first_element
         
-    def find(self, value):
+    def index(self, value):
         for i in range(len(self)):
             if self[i].content == value:
                 #print("Value %s found at index %d" % (value, i))
@@ -181,7 +181,7 @@ class LinkedList():
         return None
     
     def contains(self, value):
-        response = self.find(value)
+        response = self.index(value)
         if response is None:
             #print("List does not contain: %s" % value)
             return False
@@ -189,7 +189,45 @@ class LinkedList():
             #print("List contains value %s" % value)
             return True
     
-    # remove element with specific value
+    def remove(self, value):
+        response = self.index(value)
+        if response is None:
+            #print("List does not contain: %s" % value)
+            return False
+        else:
+            #print("List contains value %s" % value)
+            self.pop(response)
+            return True
+    
+    def remove_all(self, value):
+        # version 1
+        new_list = LinkedList()
+        for i in range(len(self)):
+            if self[i].content != value:
+                new_list.append(self[i].content)
+        self.first_element = new_list.first_element
+        #print(new_list)
+        
+        # version 2
+        #prev_node = self.first_element
+        #now_node = self.first_element
+        #while(now_node != None):
+        #    if(now_node.content == value):
+        #        prev_node.set_next_element(now_node.get_next_element())
+        #        now_node = now_node.get_next_element()
+        #        continue
+        #    else:
+        #        prev_node = now_node
+        #        now_node = now_node.get_next_element()
+        
+    
+    def count(self, value):
+        count = 0
+        for i in range(len(self)):
+            if self[i].content == value:
+                count += 1
+        return count
+    
       
 class LinkedListIterator:
     def __init__(self, head):
