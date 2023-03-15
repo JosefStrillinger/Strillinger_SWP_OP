@@ -47,22 +47,27 @@ class DoubleLinkedList():
         new_element = Node(element)
         if self.first_element is not None:
             last_element = self.get_last_element()
+            new_element.set_prev_element(last_element)
             last_element.set_next_element(new_element)
         else:
             self.first_element = new_element
+            self.first_element.set_prev_element(None)
     
     def insert(self, index, content):
         new_element = Node(content)
         if index != 0 and not index > len(self)-1 and not index == len(self)-1:
             new_element.set_next_element(self[index])
             self[index-1].set_next_element(new_element)
+            self[index].set_prev_element(self[index-1])
         elif index == 0:
             new_element.set_next_element(self[index])
+            self[index+1].set_prev_element(new_element)
             self.set_first_element(new_element)
         elif index > len(self)-1:
             self.append(content)
         elif index == len(self)-1:
             new_element.set_next_element(self[index])
+            new_element.set_prev_element(self[index-1])
             self[index-1].set_next_element(new_element)
             
     def get_first_element(self):
@@ -143,8 +148,10 @@ class DoubleLinkedList():
     def pop(self, index):
         if index != 0 and index != len(self)-1 and not index > len(self)-1:
             self[index-1].set_next_element(self[index].get_next_element())
+            self[index].get_prev_element(self[index-1])
         elif index == 0:
             self.set_first_element(self[index+1])
+            self[0].set_prev_element(None)
         elif index == len(self)-1:
             self[index-1].next_element = None
         elif index > len(self)-1:
@@ -206,6 +213,7 @@ class DoubleLinkedList():
             if self[i].content != value:
                 new_list.append(self[i].content)
         self.first_element = new_list.first_element
+        self.first_element.prev_element = None
         #print(new_list)
         
         # version 2
@@ -262,3 +270,9 @@ class Node():
     
     def set_next_element(self, new_element):
         self.next_element = new_element
+        
+    def get_prev_element(self):
+        return self.prev_element
+    
+    def set_prev_element(self, new_element):
+        self.prev_element = new_element
