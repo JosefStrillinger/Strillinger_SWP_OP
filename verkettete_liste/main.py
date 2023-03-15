@@ -74,7 +74,7 @@ def main():
     my_list.insert(8, 5)
     print(my_list)
     print("\nremove all")
-    my_list.remove_all(5)
+    #my_list.remove_all(5)
     print(my_list)
     print_list_querys(my_list)
     

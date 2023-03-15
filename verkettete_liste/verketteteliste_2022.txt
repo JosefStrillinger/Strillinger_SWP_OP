@@ -15,3 +15,13 @@ https://javabeginners.de/Sammlungen_und_Listen/Einfach_verkettete_Liste.php
 
 ABGABE bis spätestens: 2023.02.01
 GIT!
+
+
+
+Erweiterung fürs 2te Semester:
+- als doppelt verkettete Liste implementieren
+
+- mit einer "arrayList" als Datenstruktur implementieren (aber nicht die Methoden der arrayListe benutzen, sondern Wrapper-Methoden schreiben)
+
+- tabellarische Aufstellung erstellen über die Aufwandsklassen, der einzelnen Methoden aus den drei implementierungen (einfach-verkettet, doppelt-verkettet, arrayList)
+
