@@ -1,0 +1,5 @@
+Modellieren Sie eine Wetterstation mittels Observer Pattern.
+
+Ein Zentrale misst Temperatur und Luftfeuchtigkeit.
+Diverse Anzeigen geben die Messwerte mittels Bilschirm oder Farbsignalen aus.
+Überlegen Sie wie man PUSH und PULL Variante implementiert werden würde. (Also zwei Lösungen)

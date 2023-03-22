@@ -3,6 +3,8 @@ import random
 class DoubleLinkedList():
     def __init__(self):
         self.first_element = None
+        self.last_element = None# List hat ein Last_element, also muss man die logik etwas überdacht werden
+        # has length
         
     def __iter__(self):
         return LinkedListIterator(self.first_element)
@@ -49,9 +51,12 @@ class DoubleLinkedList():
             last_element = self.get_last_element()
             new_element.set_prev_element(last_element)
             last_element.set_next_element(new_element)
+            self.last_element = new_element
         else:
             self.first_element = new_element
             self.first_element.set_prev_element(None)
+            self.last_element = new_element
+            self.last_element.set_next_element(None)
     
     def insert(self, index, content):
         new_element = Node(content)
@@ -69,6 +74,7 @@ class DoubleLinkedList():
             new_element.set_next_element(self[index])
             new_element.set_prev_element(self[index-1])
             self[index-1].set_next_element(new_element)
+            self.last_element = new_element
             
     def get_first_element(self):
         return self.first_element
@@ -82,7 +88,10 @@ class DoubleLinkedList():
         return self.get_first_element().content
     
     def get_last_element(self):
-        return self[len(self)-1]
+        return self.last_element
+    
+    def set_last_element(self, element):
+        self.last_element = element
     
     def print_last_element(self):
         if self.get_last_element() is None:
@@ -145,15 +154,17 @@ class DoubleLinkedList():
     def print_element_by_index(self, index):
         return self[index].content 
     
-    def pop(self, index):
+    def pop(self, index): # pop returns the value of the list 
         if index != 0 and index != len(self)-1 and not index > len(self)-1:
             self[index-1].set_next_element(self[index].get_next_element())
-            self[index].get_prev_element(self[index-1])
+            self[index].set_prev_element(self[index-1])
         elif index == 0:
             self.set_first_element(self[index+1])
             self[0].set_prev_element(None)
         elif index == len(self)-1:
+            self[index].set_prev_element(None)
             self[index-1].next_element = None
+            self.last_element = self[index-1]
         elif index > len(self)-1:
             raise IndexError("Please use a valid index")
         print("Removed element at index: " + str(index))
@@ -165,6 +176,7 @@ class DoubleLinkedList():
             while(current is not None):
                 next = current.get_next_element()
                 current.set_next_element(prev)
+                current.set_prev_element(next)
                 prev = current
                 current = next
             self.first_element = prev 
@@ -179,6 +191,7 @@ class DoubleLinkedList():
         for index in indices:
             new_linked_list.append(self[index].content)
         self.first_element = new_linked_list.first_element
+        self.last_element = new_linked_list.last_element
         
     def index(self, value):
         for i in range(len(self)):

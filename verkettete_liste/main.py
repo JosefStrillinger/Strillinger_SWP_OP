@@ -29,7 +29,7 @@ def main_ll():
     print_list_querys(my_list)
     
     # pop first element
-    print("\pop")
+    print("\npop")
     my_list.pop(0)
     print(my_list)
     print_list_querys(my_list)
@@ -111,7 +111,7 @@ def main_dll():
     print_list_querys(my_list)
     
     # pop first element
-    print("\pop")
+    print("\npop")
     my_list.pop(0)
     print(my_list)
     print_list_querys(my_list)

@@ -1,4 +1,4 @@
-package Factory_Pattern;
+package Patterns.Factory_Pattern;
 
 public class PizzeriaFactory {
     public static void main(String[] args) {

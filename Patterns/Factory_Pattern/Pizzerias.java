@@ -1,4 +1,4 @@
-package Factory_Pattern;
+package Patterns.Factory_Pattern;
 
 class HamburgPizzeria extends Pizzeria{
 

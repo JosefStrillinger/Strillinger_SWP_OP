@@ -1,4 +1,4 @@
-package Factory_Pattern;
+package Patterns.Factory_Pattern;
 
 public abstract class Pizzeria{
     public void bakePizza(Pizza p){
