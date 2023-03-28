@@ -1,4 +1,3 @@
-
 class ArrayList():              
     def __init__(self):
         self.arr = [None] * 1
@@ -40,6 +39,17 @@ class ArrayList():
         info = info[:-1] if len(info) > 1 else info + "]"
 
         return info
+    
+    def __getitem__(self, index):
+        if index < 0:
+            raise IndexError("Invalid Index")
+        if index >= self.size:
+            raise IndexError("Invalid Index")
+        al_index = 0
+        for i in self.arr: 
+            if al_index == index:
+                return i
+            al_index += 1
     
 
 if __name__ == "__main__":

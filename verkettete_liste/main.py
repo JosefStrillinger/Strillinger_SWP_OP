@@ -2,6 +2,7 @@ import random
 import time
 from linked_list import LinkedList
 from double_linked_list import DoubleLinkedList
+from array_list import ArrayList
 
 def print_list_querys(list):
     print("-----------------------------")
@@ -11,7 +12,7 @@ def print_list_querys(list):
     print("Element at index ("+ str(0) +"): " + str(list[0]))
     print("-----------------------------")
 
-def main_ll():
+def main_linked_list():
     my_list = LinkedList()
     count = 10
     time1 = time.time()
@@ -174,9 +175,25 @@ def main_dll():
     #print_list_querys(my_list)
     
     print("\nTime: " + str(time.time()*1000 - time1*1000) + " ms")
+
+def main_al():
+    my_array = ArrayList()
     
+    for i in range(50):
+        my_array.append(random.randint(0, 100))
+    
+    print(len(my_array))
+    print(my_array)
+    print(my_array[10])
     
 if __name__ == "__main__":
+    
     #main_ll()
+    
     print("############################################################")
-    main_dll()
+    
+    #main_dll()
+    
+    print("############################################################")
+    
+    main_al()

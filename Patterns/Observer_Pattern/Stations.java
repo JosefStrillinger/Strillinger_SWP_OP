@@ -25,6 +25,7 @@ abstract class Stations {
     // Pull
     protected void notifySubscribers(){
         for (Display display : displayList){
+            System.out.println(display);// Nur damit kein Fehler
             break;
         }
     }

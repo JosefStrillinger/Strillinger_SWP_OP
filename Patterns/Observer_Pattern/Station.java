@@ -1,8 +1,5 @@
 package Patterns.Observer_Pattern;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Station extends Stations{
     
     private Weather weather;
