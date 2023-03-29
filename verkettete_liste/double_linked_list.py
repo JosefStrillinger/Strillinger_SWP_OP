@@ -4,8 +4,8 @@ class DoubleLinkedList():
     def __init__(self):
         self.first_element = None
         self.last_element = None# List hat ein Last_element, also muss man die logik etwas überdacht werden
-        # has length
-        
+        self.length = 0
+    
     def __iter__(self):
         return LinkedListIterator(self.first_element)
     
@@ -57,24 +57,28 @@ class DoubleLinkedList():
             self.first_element.set_prev_element(None)
             self.last_element = new_element
             self.last_element.set_next_element(None)
+        self.length += 1
     
     def insert(self, index, content):
         new_element = Node(content)
-        if index != 0 and not index > len(self)-1 and not index == len(self)-1:
+        if index != 0 and not index > self.length-1 and not index == self.length-1:
             new_element.set_next_element(self[index])
             self[index-1].set_next_element(new_element)
             self[index].set_prev_element(self[index-1])
+            self.length += 1
         elif index == 0:
             new_element.set_next_element(self[index])
             self[index+1].set_prev_element(new_element)
             self.set_first_element(new_element)
-        elif index > len(self)-1:
+            self.length += 1
+        elif index > self.length-1:
             self.append(content)
-        elif index == len(self)-1:
+        elif index == self.length-1:
             new_element.set_next_element(self[index])
             new_element.set_prev_element(self[index-1])
             self[index-1].set_next_element(new_element)
             self.last_element = new_element
+            self.length += 1
             
     def get_first_element(self):
         return self.first_element
@@ -108,7 +112,8 @@ class DoubleLinkedList():
         self.insertion_sort()#could be changed to bubble_sort()
     
     def bubble_sort(self):
-        n = len(self)
+        n = self.length
+        #n = len(self)
         swapped = False
         for i in range(n-1):
             for j in range(0, n-i-1):
@@ -143,7 +148,8 @@ class DoubleLinkedList():
         return head_ref
     
     def get_element_by_index(self, index):
-        n = len(self)
+        n = self.length
+        # n = len(self)
         element = self.get_first_element()
         if index > n-1 or index < 0 or n == 0:
             raise IndexError("Please use a valid index")
@@ -155,22 +161,25 @@ class DoubleLinkedList():
         return self[index].content 
     
     def pop(self, index): # pop returns the value of the list 
-        if index != 0 and index != len(self)-1 and not index > len(self)-1:
+        if index != 0 and index != len(self)-1 and not index > self.length-1:
             self[index-1].set_next_element(self[index].get_next_element())
             self[index].set_prev_element(self[index-1])
+            self.length -= 1
         elif index == 0:
             self.set_first_element(self[index+1])
             self[0].set_prev_element(None)
+            self.length -= 1
         elif index == len(self)-1:
             self[index].set_prev_element(None)
             self[index-1].next_element = None
             self.last_element = self[index-1]
-        elif index > len(self)-1:
+            self.length -= 1
+        elif index > self.length-1:
             raise IndexError("Please use a valid index")
         print("Removed element at index: " + str(index))
         
     def reverse(self):
-        if not len(self) < 1:
+        if not self.length < 1:
             prev = None
             current = self.get_first_element()
             while(current is not None):
@@ -183,9 +192,11 @@ class DoubleLinkedList():
     
     def clear(self):
         self.set_first_element(None)
+        self.set_last_element(None)
+        self.length = 0
     
     def shuffle(self):
-        indices = list(range(len(self)))
+        indices = list(range(self.length))
         random.shuffle(indices)
         new_linked_list = DoubleLinkedList()
         for index in indices:
@@ -194,7 +205,7 @@ class DoubleLinkedList():
         self.last_element = new_linked_list.last_element
         
     def index(self, value):
-        for i in range(len(self)):
+        for i in range(self.length):
             if self[i].content == value:
                 #print("Value %s found at index %d" % (value, i))
                 return i
@@ -222,11 +233,14 @@ class DoubleLinkedList():
     def remove_all(self, value):
         # version 1
         new_list = DoubleLinkedList()
-        for i in range(len(self)):
+        for i in range(self.length):
             if self[i].content != value:
                 new_list.append(self[i].content)
         self.first_element = new_list.first_element
         self.first_element.prev_element = None
+        self.last_element = new_list.last_element
+        self.last_element.next_element = None
+        self.length = new_list.length
         #print(new_list)
         
         # version 2
@@ -244,7 +258,7 @@ class DoubleLinkedList():
     
     def count(self, value):
         count = 0
-        for i in range(len(self)):
+        for i in range(self.length):
             if self[i].content == value:
                 count += 1
         return count

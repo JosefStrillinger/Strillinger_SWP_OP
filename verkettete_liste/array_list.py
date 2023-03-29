@@ -1,6 +1,8 @@
+import array
+
 class ArrayList():              
     def __init__(self):
-        self.arr = [None] * 1
+        self.arr = [None] * 10
         self.size = 1
     
     def append(self, data):
@@ -30,15 +32,15 @@ class ArrayList():
             else:
                 l += 1
         return l
-
+    
     def __str__(self):
         info = "["
         for i in self.arr:
             if i != None:
                 info += (str(i) + ",")
-        info = info[:-1] if len(info) > 1 else info + "]"
+        #info = info[:-1] if len(info) > 1 else info + "]"
 
-        return info
+        return info + "]"
     
     def __getitem__(self, index):
         if index < 0:
@@ -51,6 +53,8 @@ class ArrayList():
                 return i
             al_index += 1
     
+    def pop(self, index):
+        pass    
 
 if __name__ == "__main__":
     

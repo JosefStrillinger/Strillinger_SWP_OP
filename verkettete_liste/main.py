@@ -96,7 +96,7 @@ def main_linked_list():
     
 def main_dll():
     my_list = DoubleLinkedList()
-    count = 10
+    count = 1000
     time1 = time.time()
       
     for i in range(count):
@@ -158,7 +158,7 @@ def main_dll():
     my_list.insert(8, 5)
     print(my_list)
     print("\nremove all")
-    #my_list.remove_all(5)
+    my_list.remove_all(5)
     print(my_list)
     print_list_querys(my_list)
     
