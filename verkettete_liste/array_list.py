@@ -2,27 +2,8 @@ import array
 
 class ArrayList():              
     def __init__(self):
-        self.arr = [None] * 10
-        self.size = 1
-    
-    def append(self, data):
-        def append_wrapper():
-            if len(self) == 0:
-                self.arr[0] = data
-                return
-            for i in range(0, self.size):
-                l = len(self)
-                if self.arr[i] == None:
-                    self.arr[i] = data
-                    return True
-            return False
-        
-        res = append_wrapper()
-        if res == False:
-            self.arr = self.arr + ([None]*self.size)
-            self.size *= 2
-            self.append(data)
-        return
+        self.arr = []
+        self.size = 10
     
     def __len__(self):
         l = 0
@@ -53,8 +34,42 @@ class ArrayList():
                 return i
             al_index += 1
     
-    def pop(self, index):
-        pass    
+    def append(self, data):
+        def append_wrapper():
+            if len(self.arr) < self.size:
+                self.arr.append(data)
+                return True
+            return False
+        res = append_wrapper()
+        if res == False:
+            self.size *= 2
+            self.append(data)
+        return
+    
+    def pop(self, index): # insert checks 
+        def pop_wrapper():
+            popped_entry = self.arr[index]
+            self.arr.remove(index)
+            if len(self) <= self.size/2:
+                return False, popped_entry
+            return True, popped_entry
+        res, entry = pop_wrapper()
+        if res == False:
+            self.size /= 2
+        return entry
+    
+    def remove(self, value):
+        def remove_wrapper():
+            for i in range(len(self)-1):
+                if self.arr[i] == value:
+                    self.arr.remove(i)
+                    if len(self) <= self.size/2:
+                        return False
+                    return True
+        res = remove_wrapper()
+        if res == False:
+            self.size /= 2
+
 
 if __name__ == "__main__":
     

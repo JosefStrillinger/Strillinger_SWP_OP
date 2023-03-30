@@ -1,0 +1,20 @@
+                    Single Linked List                   Double Linked List                 ArrayList
+append                      n                                     1
+get_first                   1                                     1                                                   
+get_last                    n                                     1             
+len                         n                                     n                 
+pop                         n                                     n 
+__getitem__                 n                                     n 
+index                       n                                     n
+bubble_sort
+insertion_sort
+clear                       1                                     1
+shuffle                     n                                     n
+reverse                     n                                     n
+__str__                     n                                     n
+contains                    n                                     n
+remove                      n                                     n
+remove_all                  n                                     n
+count                       n                                     n
+
+

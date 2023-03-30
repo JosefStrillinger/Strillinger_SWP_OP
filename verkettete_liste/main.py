@@ -185,6 +185,8 @@ def main_al():
     print(len(my_array))
     print(my_array)
     print(my_array[10])
+    print(my_array.pop(10))
+    print(my_array.remove(10))
     
 if __name__ == "__main__":
     

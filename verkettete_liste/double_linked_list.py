@@ -188,7 +188,7 @@ class DoubleLinkedList():
                 current.set_prev_element(next)
                 prev = current
                 current = next
-            self.first_element = prev 
+            self.first_element = prev
     
     def clear(self):
         self.set_first_element(None)
