@@ -2,17 +2,16 @@ import array
 
 class ArrayList():              
     def __init__(self):
-        self.arr = []
-        self.size = 10
+        self.arr = [None] * 10
     
     def __len__(self):
-        l = 0
+        length = 0
         for i in self.arr:
             if i == None:
                 break
             else:
-                l += 1
-        return l
+                length += 1
+        return length
     
     def __str__(self):
         info = "["
@@ -26,7 +25,7 @@ class ArrayList():
     def __getitem__(self, index):
         if index < 0:
             raise IndexError("Invalid Index")
-        if index >= self.size:
+        if index >= len(self.arr):
             raise IndexError("Invalid Index")
         al_index = 0
         for i in self.arr: 
@@ -36,21 +35,27 @@ class ArrayList():
     
     def append(self, data):
         def append_wrapper():
-            if len(self.arr) < self.size:
-                self.arr.append(data)
-                return True
+            if len(self.arr) == 0:
+                self.arr[0] = data
+            for i in range(len(self.arr)+1):
+                try:
+                    if self.arr[i] == None:
+                        self.arr[i] = data
+                        return True
+                except IndexError:
+                    pass
             return False
         res = append_wrapper()
         if res == False:
-            self.size *= 2
+            self.arr = self.arr + ([None]*10)
             self.append(data)
         return
     
-    def pop(self, index): # insert checks 
+    def pop(self, index):
         def pop_wrapper():
             popped_entry = self.arr[index]
             self.arr.remove(index)
-            if len(self) <= self.size/2:
+            if len(self) <= self.arr/2:
                 return False, popped_entry
             return True, popped_entry
         res, entry = pop_wrapper()
